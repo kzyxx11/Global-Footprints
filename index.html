@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_e9796176c593f099013a33ba750644af {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_e9796176c593f099013a33ba750644af" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_e9796176c593f099013a33ba750644af = L.map(
+                "map_e9796176c593f099013a33ba750644af",
+                {
+                    center: [5.0, 105.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 5,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_f2b52e37e4c70135b50acc6734238d90 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_f2b52e37e4c70135b50acc6734238d90.addTo(map_e9796176c593f099013a33ba750644af);
+        
+    
+            var marker_041774707e87bfe36a715181ff96d8f5 = L.marker(
+                [3.1516964, 101.6942371],
+                {
+}
+            ).addTo(map_e9796176c593f099013a33ba750644af);
+        
+    
+            var icon_c34e0ce2e2c18c948ea7fc53e173f3fe = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#52b788",
+  "icon": "cloud",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_450054b0d48dcc7a45fc4e9c35aec227 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_d0a1d404916fcee7e905818aa35c9591 = $(`<div id="html_d0a1d404916fcee7e905818aa35c9591" style="width: 100.0%; height: 100.0%;">             <div style="font-family: 'Arial', sans-serif; width: 220px;">                 <h4 style="margin: 0 0 5px 0; color: #52b788;">Kuala Lumpur, Malaysia</h4>                 <span style="font-size: 10px; background: #52b788; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold;">BASE</span>                 <p style="font-size: 11px; color: #555; margin: 8px 0 0 0; line-height: 1.4;">Current operational base and digital nomad headquarters.</p>             </div>             </div>`)[0];
+                popup_450054b0d48dcc7a45fc4e9c35aec227.setContent(html_d0a1d404916fcee7e905818aa35c9591);
+            
+        
+
+        marker_041774707e87bfe36a715181ff96d8f5.bindPopup(popup_450054b0d48dcc7a45fc4e9c35aec227)
+        ;
+
+        
+    
+    
+                marker_041774707e87bfe36a715181ff96d8f5.setIcon(icon_c34e0ce2e2c18c948ea7fc53e173f3fe);
+            
+    
+            var marker_7a29858ac1daf07974be43b1c90f332b = L.marker(
+                [-8.2271303, 115.1919203],
+                {
+}
+            ).addTo(map_e9796176c593f099013a33ba750644af);
+        
+    
+            var icon_3f7c5e57a85da3a9f4c9e562299afdf2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#1f77b4",
+  "icon": "camera",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_3f3454c7abb672b97237e0d51faaf5be = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_ce93fa87cb8c96ecb12da605c31a6a2b = $(`<div id="html_ce93fa87cb8c96ecb12da605c31a6a2b" style="width: 100.0%; height: 100.0%;">             <div style="font-family: 'Arial', sans-serif; width: 220px;">                 <h4 style="margin: 0 0 5px 0; color: #1f77b4;">Bali, Indonesia</h4>                 <span style="font-size: 10px; background: #1f77b4; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold;">VISITED</span>                 <p style="font-size: 11px; color: #555; margin: 8px 0 0 0; line-height: 1.4;">Where my passport gained its first stamp and unforgettable memories began.</p>             </div>             </div>`)[0];
+                popup_3f3454c7abb672b97237e0d51faaf5be.setContent(html_ce93fa87cb8c96ecb12da605c31a6a2b);
+            
+        
+
+        marker_7a29858ac1daf07974be43b1c90f332b.bindPopup(popup_3f3454c7abb672b97237e0d51faaf5be)
+        ;
+
+        
+    
+    
+                marker_7a29858ac1daf07974be43b1c90f332b.setIcon(icon_3f7c5e57a85da3a9f4c9e562299afdf2);
+            
+    
+            var marker_dc182efb83680ca8ecb6fdc3299dd404 = L.marker(
+                [18.7882778, 98.9858802],
+                {
+}
+            ).addTo(map_e9796176c593f099013a33ba750644af);
+        
+    
+            var icon_cf307cc0a014c508c8ccc722ad1a5b54 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#1f77b4",
+  "icon": "camera",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_1e8ea1b81d6889852661d1706b21caf2 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_e8a76d56eb025b3a79fbffd7184d077a = $(`<div id="html_e8a76d56eb025b3a79fbffd7184d077a" style="width: 100.0%; height: 100.0%;">             <div style="font-family: 'Arial', sans-serif; width: 220px;">                 <h4 style="margin: 0 0 5px 0; color: #1f77b4;">Chiang Mai, Thailand</h4>                 <span style="font-size: 10px; background: #1f77b4; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold;">VISITED</span>                 <p style="font-size: 11px; color: #555; margin: 8px 0 0 0; line-height: 1.4;">Conquered my first 13,000-ft skydive, experienced adventure sports, and captured 200+ travel moments.</p>             </div>             </div>`)[0];
+                popup_1e8ea1b81d6889852661d1706b21caf2.setContent(html_e8a76d56eb025b3a79fbffd7184d077a);
+            
+        
+
+        marker_dc182efb83680ca8ecb6fdc3299dd404.bindPopup(popup_1e8ea1b81d6889852661d1706b21caf2)
+        ;
+
+        
+    
+    
+                marker_dc182efb83680ca8ecb6fdc3299dd404.setIcon(icon_cf307cc0a014c508c8ccc722ad1a5b54);
+            
+    
+            var marker_30b359459ccf969367e873b263abf151 = L.marker(
+                [41.1173591, -7.5662701],
+                {
+}
+            ).addTo(map_e9796176c593f099013a33ba750644af);
+        
+    
+            var icon_79ac655a39207c73607c6a43902af385 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "white",
+  "iconColor": "#e63946",
+  "icon": "plane",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b1f1f3e840d976c61ac1ad535add2441 = L.popup({
+  "maxWidth": 250,
+});
+
+        
+            
+                var html_88808a2613620b626a64e2c8a0b57ee3 = $(`<div id="html_88808a2613620b626a64e2c8a0b57ee3" style="width: 100.0%; height: 100.0%;">             <div style="font-family: 'Arial', sans-serif; width: 220px;">                 <h4 style="margin: 0 0 5px 0; color: #e63946;">TBC..</h4>                 <span style="font-size: 10px; background: #e63946; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold;">PLANNED</span>                 <p style="font-size: 11px; color: #555; margin: 8px 0 0 0; line-height: 1.4;">Upcoming trip</p>             </div>             </div>`)[0];
+                popup_b1f1f3e840d976c61ac1ad535add2441.setContent(html_88808a2613620b626a64e2c8a0b57ee3);
+            
+        
+
+        marker_30b359459ccf969367e873b263abf151.bindPopup(popup_b1f1f3e840d976c61ac1ad535add2441)
+        ;
+
+        
+    
+    
+                marker_30b359459ccf969367e873b263abf151.setIcon(icon_79ac655a39207c73607c6a43902af385);
+            
+</script>
+</html>
