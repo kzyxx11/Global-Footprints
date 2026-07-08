@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "place": "Kuala Lumpur, Malaysia",
+    "status": "Base",
+    "description": "Current operational base and digital nomad headquarters."
+  },
+  {
+    "id": 2,
+    "place": "Bali, Indonesia",
+    "status": "Visited",
+    "description": "Where my passport gained its first stamp and unforgettable memories began."
+  },
+  {
+    "id": 3,
+    "place": "Chiang Mai, Thailand",
+    "status": "Visited",
+    "description": "Conquered my first 13,000-ft skydive, experienced adventure sports, and captured 200+ travel moments."
+  }
+  {
+    "id": 4,
+    "place": "TBC..",
+    "status": "Planned",
+    "description": "Upcoming trip"
+  }
+]
