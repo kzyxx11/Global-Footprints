@@ -1,0 +1,37 @@
+name: Auto-Deploy Global Footprints Map
+
+on:
+  push:
+    branches: [ "main" ] # As soon as you update locations.json, the cloud will automatically redraw the map and update the website.
+  workflow_dispatch: # Allows you to manually click to force open at any time
+
+# Grant necessary permissions to rewrite branch assets securely
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Setup Python Infrastructure
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Spatial Dependencies
+      run: |
+        pip install requests folium
+
+    - name: Execute Geodata Pipeline
+      run: |
+        python generate_map.py
+
+    - name: Deploy Interactive Map Assets to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: .     # Deploy the generated index.html
+        branch: gh-pages # Deploy onto dedicated hosting branch
