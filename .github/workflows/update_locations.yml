@@ -12,6 +12,12 @@ permissions:
 jobs:
   update-and-deploy:
     runs-on: ubuntu-latest
+    
+    # ==================== 🎯 Core fix: Explicitly specify the Pages deployment environment ====================
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
