@@ -22,21 +22,5 @@
     "place": "TBC..",
     "status": "Planned",
     "description": "Upcoming trip"
-  },
-  {
-    "id": 5,
-    "place": "New York, United States",
-    "status": "Visited",
-    "description": "First time to Wall Street and Empire State.",
-    "latitude": "40.71",
-    "longitude": "-74.01"
-  },
-  {
-    "id": 6,
-    "place": "Tokyo, Japan",
-    "status": "Visited",
-    "description": "What a nice place, will visit soon!",
-    "latitude": "35.68",
-    "longitude": "139.76"
   }
 ]
