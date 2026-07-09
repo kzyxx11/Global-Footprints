@@ -4,16 +4,28 @@ on:
   repository_dispatch:
     types: [ add_footprint ]
 
+# Core permissions: All privileges for file writing, token verification, and Pages publishing must be granted.
 permissions:
-  contents: write # Only retain the purest local file write and push permissions.
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
-  update-json:
+  update-and-deploy:
     runs-on: ubuntu-latest
+    
+    # Explicitly declare and publish to the github-pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Get the complete commit history to prevent conflicts
 
+      # 1. Inject new locations into locations.json
       - name: Inject New Footprint Data
         run: |
           PLACE="${{ github.event.client_payload.place }}"
@@ -38,6 +50,7 @@ jobs:
              '. += [{id: $id, place: $place, status: $status, description: $desc, latitude: $lat, longitude: $lon}]' \
              locations.json > tmp.json && mv tmp.json locations.json
 
+      # 2. Permanently sync the latest locations.json to your GitHub repository's main branch.
       - name: Commit and Push Changes
         run: |
           git config --local user.email "actions@github.com"
@@ -45,11 +58,32 @@ jobs:
           git add locations.json
           git diff --quiet && git diff --staged --quiet || (git commit -m "🌐 Auto-added footprint: ${{ github.event.client_payload.place }}" && git push)
 
-      # ==================== 🚀 Core fix: Directly and securely link and activate your web publishing pipeline. ====================
-      - name: Trigger Deploy Workflow
+      # 3. Injecting Python and Folium map rendering engine environment
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
         run: |
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/actions/workflows/deploy.yml/dispatches \
-            -d '{"ref":"main"}' || echo "Workflow triggered"
+          python -m pip install --upgrade pip
+          pip install folium
+
+      # 4. Run your map rendering and generation script live!
+      - name: Run Map Generator
+        run: |
+          if [ -f generate_map.py ]; then
+            python generate_map.py
+          else
+            echo "⚠️ generate_map.py 未找到，请确保该脚本在仓库根目录下！"
+          fi
+
+      # 5. Package all web page outputs in the current directory (including the latest generated index.html and json files).
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
