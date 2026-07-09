@@ -22,5 +22,13 @@
     "place": "TBC..",
     "status": "Planned",
     "description": "Upcoming trip"
+  },
+  {
+    "id": 5,
+    "place": "Tokyo, Japan",
+    "status": "Visited",
+    "description": "What a nice place, will visit soon!",
+    "latitude": "35.68",
+    "longitude": "139.76"
   }
 ]
