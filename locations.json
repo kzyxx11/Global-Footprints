@@ -22,13 +22,6 @@
     "place": "TBC..",
     "status": "Planned",
     "description": "Upcoming trip"
-  },
-  {
-    "id": 5,
-    "place": "Chiang Mai, Thailand",
-    "status": "Visited",
-    "description": "Conquered my first 13,000-ft skydive, experienced adventure sports, and captured 200+ travel moments.",
-    "latitude": "18.79",
-    "longitude": "98.99"
   }
+
 ]
