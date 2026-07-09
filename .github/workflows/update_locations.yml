@@ -1,0 +1,50 @@
+name: Auto Update Travel Footprints
+
+on:
+  repository_dispatch:
+    types: [ add_footprint ] # 👈 监听来自新 Worker 网关的专用呼叫
+
+permissions:
+  contents: write # 赋予 Actions 写入和提交新地点到 locations.json 的权限
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Inject New Footprint Data
+        run: |
+          # 1. 提取网关传过来的参数
+          PLACE="${{ github.event.client_payload.place }}"
+          STATUS="${{ github.event.client_payload.status }}"
+          DESC="${{ github.event.client_payload.description }}"
+          LAT="${{ github.event.client_payload.latitude }}"
+          LON="${{ github.event.client_payload.longitude }}"
+          
+          # 2. 如果 locations.json 不存在，初始化一个空数组
+          if [ ! -f locations.json ]; then
+            echo "[]" > locations.json
+          fi
+          
+          # 3. 计算全新的自增 ID (读取当前最大 ID 并 +1)
+          CURRENT_MAX_ID=$(jq 'map(.id) | max // 0' locations.json)
+          NEW_ID=$((CURRENT_MAX_ID + 1))
+          
+          # 4. 利用极客神器 jq，将新数据优雅地追加到本地 JSON 数组中
+          jq --argjson id "$NEW_ID" \
+             --arg place "$PLACE" \
+             --arg status "$STATUS" \
+             --arg desc "$DESC" \
+             --arg lat "$LAT" \
+             --arg lon "$LON" \
+             '. += [{id: $id, place: $place, status: $status, description: $desc, latitude: $lat, longitude: $lon}]' \
+             locations.json > tmp.json && mv tmp.json locations.json
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions Bot"
+          git add locations.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "🌐 Auto-added footprint: ${{ github.event.client_payload.place }}" && git push)
