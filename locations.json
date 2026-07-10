@@ -22,5 +22,15 @@
     "place": "TBC..",
     "status": "Planned",
     "description": "Upcoming trip"
+  },
+  {
+    "id": 5,
+    "place": "东京，日本",
+    "status": "Visited",
+    "description": "东京的夜景无敌",
+    "latitude": "35.68",
+    "longitude": "139.76",
+    "date": "2026-07-10",
+    "media_url": ""
   }
 ]
