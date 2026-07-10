@@ -42,5 +42,15 @@
     "longitude": "2.32",
     "date": "2026-07-10",
     "media_url": ""
+  },
+  {
+    "id": 7,
+    "place": "New York, United States",
+    "status": "Planned",
+    "description": "自由女神很漂亮，象征着美国梦。",
+    "latitude": "40.72",
+    "longitude": "-74.00",
+    "date": "2026-07-10",
+    "media_url": ""
   }
 ]
