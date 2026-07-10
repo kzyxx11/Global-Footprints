@@ -32,5 +32,15 @@
     "longitude": "-0.12",
     "date": "2026-07-10",
     "media_url": ""
+  },
+  {
+    "id": 6,
+    "place": "Paris, Île-de-France",
+    "status": "Visited",
+    "description": "漫步在埃菲尔铁塔下，塞纳河畔的微风很舒服。",
+    "latitude": "48.85",
+    "longitude": "2.32",
+    "date": "2026-07-10",
+    "media_url": ""
   }
 ]
