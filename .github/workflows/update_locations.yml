@@ -23,6 +23,8 @@ jobs:
           DESC="${{ github.event.client_payload.description }}"
           LAT="${{ github.event.client_payload.latitude }}"
           LON="${{ github.event.client_payload.longitude }}"
+          DATE="${{ github.event.client_payload.date }}"
+          MEDIA="${{ github.event.client_payload.media_url }}"
           
           if [ ! -f locations.json ]; then
             echo "[]" > locations.json
@@ -31,13 +33,16 @@ jobs:
           CURRENT_MAX_ID=$(jq 'map(.id) | max // 0' locations.json)
           NEW_ID=$((CURRENT_MAX_ID + 1))
           
+          # The upgraded jQuery script perfectly aligns with the newly expanded data model.
           jq --argjson id "$NEW_ID" \
              --arg place "$PLACE" \
              --arg status "$STATUS" \
              --arg desc "$DESC" \
              --arg lat "$LAT" \
              --arg lon "$LON" \
-             '. += [{id: $id, place: $place, status: $status, description: $desc, latitude: $lat, longitude: $lon}]' \
+             --arg date "$DATE" \
+             --arg media "$MEDIA" \
+             '. += [{id: $id, place: $place, status: $status, description: $desc, latitude: $lat, longitude: $lon, date: $date, media_url: $media}]' \
              locations.json > tmp.json && mv tmp.json locations.json
 
       - name: Commit and Push Changes
