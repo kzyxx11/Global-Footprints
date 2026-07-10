@@ -52,5 +52,15 @@
     "longitude": "-74.00",
     "date": "2026-07-10",
     "media_url": ""
+  },
+  {
+    "id": 8,
+    "place": "กรุงเทพมหานคร, ประเทศไทย",
+    "status": "Visited",
+    "description": "体验了疯狂的突突车，路边摊的冬阴功汤太正宗了！",
+    "latitude": "13.76",
+    "longitude": "100.49",
+    "date": "2026-07-10",
+    "media_url": ""
   }
 ]
