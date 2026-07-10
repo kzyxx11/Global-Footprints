@@ -22,5 +22,15 @@
     "place": "TBC..",
     "status": "Planned",
     "description": "Upcoming trip"
+  },
+  {
+    "id": 5,
+    "place": "伦敦，英国",
+    "status": "Planned",
+    "description": "计划后年出发，去看大本钟！",
+    "latitude": "51.50",
+    "longitude": "-0.12",
+    "date": "2026-07-10",
+    "media_url": ""
   }
 ]
