@@ -1,12 +1,9 @@
 name: Update Global Footprints Map
-
 on:
   repository_dispatch:
     types: [add_footprint]
-
 permissions:
   contents: write
-
 jobs:
   update-map:
     runs-on: ubuntu-latest
@@ -25,7 +22,6 @@ jobs:
         with:
           python-version: '3.10'
 
-      # ✨ 如果你的 generate_map.py 依赖 pandas、folium 等库，确保这里自动安装好
       - name: Install Dependencies
         run: |
           pip install pandas folium jinja2 requests
@@ -35,11 +31,9 @@ jobs:
           python -c "
           import json
           import os
-
           with open('event_payload.json', 'r', encoding='utf-8') as f:
               payload = json.load(f)
           print('Loaded Payload:', payload)
-
           json_file = 'locations.json'
           if os.path.exists(json_file):
               with open(json_file, 'r', encoding='utf-8') as f:
@@ -49,9 +43,7 @@ jobs:
                       data = []
           else:
               data = []
-
           new_id = max([item.get('id', 0) for item in data]) + 1 if data else 1
-
           new_entry = {
               'id': new_id,
               'place': payload.get('place', 'Unknown POI'),
@@ -64,28 +56,23 @@ jobs:
           }
           
           data.append(new_entry)
-
           with open(json_file, 'w', encoding='utf-8') as f:
               json.dump(data, f, ensure_ascii=False, indent=2)
           print('Successfully added data log.')
           "
 
-      # ✨ 强制生成新的可视化大地图
       - name: Regenerate Visual Map Matrix
         run: |
           if [ -f "generate_map.py" ]; then
             python generate_map.py
           fi
 
-      # ✨ 重点加固：强制提交所有产生变化的文件写回仓库
-      - name: Push Updates Back to Main Branch
+      - name: Push locations.json Back to Main Branch
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           
-          # 强制暂存数据文件和可能生成的 html 地图文件
           git add locations.json
-          git add --all *.html || true
           
           if git diff --staged --quiet; then
             echo "No pipeline modifications detected. Standing by."
@@ -93,3 +80,9 @@ jobs:
             git commit -m "🤖 Realtime Map Synced: ${{ github.event.client_payload.place }} via Bot Pipeline"
             git push origin main
           fi
+
+      - name: Deploy Updated Map to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: .
+          branch: gh-pages
