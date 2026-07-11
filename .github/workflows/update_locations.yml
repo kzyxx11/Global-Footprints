@@ -1,62 +1,90 @@
-name: Auto Update Travel Footprints
+name: Update Global Footprints Map
 
 on:
   repository_dispatch:
-    types: [add_footprint]
-
+    types: [add_footprint]  # 👈 Strictly correspond to the signals emitted by the Worker
 permissions:
-  contents: write # Only retain clean file write and code commit permissions.
-
+  contents: write  # 👈 Crucial! Action scripts must be granted permission to write code to your repository.
+  
 jobs:
-  update-json:
+  update-map:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GH_PAT }} # 👈 Clone the device using your newly created, custom key, ensuring you have sufficient permissions to trigger subsequent chains.
+          fetch-depth: 0
 
-      - name: Inject New Footprint Data
-        run: |
-          PLACE="${{ github.event.client_payload.place }}"
-          STATUS="${{ github.event.client_payload.status }}"
-          DESC="${{ github.event.client_payload.description }}"
-          LAT="${{ github.event.client_payload.latitude }}"
-          LON="${{ github.event.client_payload.longitude }}"
-          DATE="${{ github.event.client_payload.date }}"
-          MEDIA="${{ github.event.client_payload.media_url }}"
-          
-          if [ ! -f locations.json ]; then
-            echo "[]" > locations.json
-          fi
-          
-          CURRENT_MAX_ID=$(jq 'map(.id) | max // 0' locations.json)
-          NEW_ID=$((CURRENT_MAX_ID + 1))
-          
-          # The upgraded jQuery script perfectly aligns with the newly expanded data model.
-          jq --argjson id "$NEW_ID" \
-             --arg place "$PLACE" \
-             --arg status "$STATUS" \
-             --arg desc "$DESC" \
-             --arg lat "$LAT" \
-             --arg lon "$LON" \
-             --arg date "$DATE" \
-             --arg media "$MEDIA" \
-             '. += [{id: $id, place: $place, status: $status, description: $desc, latitude: $lat, longitude: $lon, date: $date, media_url: $media}]' \
-             locations.json > tmp.json && mv tmp.json locations.json
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-      - name: Commit and Push Changes
+      - name: Install Dependencies
         run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions Bot"
+          pip install pandas folium  # Fill in the required dependencies according to your generate_map.py file.
+
+      - name: Inject New Footprint Data into JSON
+        run: |
+          python -c "
+          import json
+          import os
+
+          # 1. Read the client_payload data sent by the Worker.
+          payload = ${JSON_DATA}
+          print('Received payload:', payload)
+
+          json_file = 'locations.json'
+          
+          # 2. Read existing data
+          if os.path.exists(json_file):
+              with open(json_file, 'r', encoding='utf-8') as f:
+                  data = json.load(f)
+          else:
+              data = []
+
+          # Calculate the new auto-incrementing ID
+          new_id = max([item.get('id', 0) for item in data]) + 1 if data else 1
+
+          # 3. Construct a new footprint node containing multimedia URLs
+          new_entry = {
+              'id': new_id,
+              'place': payload.get('place'),
+              'status': payload.get('status'),
+              'description': payload.get('description'),
+              'latitude': float(payload.get('latitude', 0)),
+              'longitude': float(payload.get('longitude', 0)),
+              'date': payload.get('date'),
+              'media_url': payload.get('media_url', '')
+          }
+          
+          data.append(new_entry)
+
+          # 4. Write back to local disk
+          with open(json_file, 'w', encoding='utf-8') as f:
+              json.dump(data, f, ensure_ascii=False, indent=2)
+          "
+        env:
+          # Smart capture of GitHub Core event context payload
+          JSON_DATA: ${{ json(github.event.client_payload) }}
+
+      - name: Regenerate Visual Travel Map
+        run: |
+          python generate_map.py  # 👈 Run your map rendering generation script
+
+      - name: Commit and Push Changes Back to Repository
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Check for file changes to prevent empty commit errors.
           git add locations.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "🌐 Auto-added footprint: ${{ github.event.client_payload.place }}" && git push origin main)
-
-      # ==================== 🚀 Core fix: Forcefully revive the old release engine using your separate key. ====================
-      - name: Trigger Map Deploy Workflow
-        run: |
-          curl -X POST \
-            -H "Authorization: token ${{ secrets.GH_PAT }}" \
-            -H "Accept: application/vnd.github.v3+json" \
-            https://api.github.com/repos/${{ github.repository }}/actions/workflows/deploy.yml/dispatches \
-            -d '{"ref":"main"}' || echo "Workflow triggered"
+          # If your map is exported as index.html or other map files, remember to add it here as well.
+          # git add index.html 
+          
+          if git diff --staged --quiet; then
+            echo "No changes detected. Skipping commit."
+          else
+            git commit -m "🤖 Auto-updated footprint: ${{ github.event.client_payload.place }} via Bot"
+            git push origin main
+          fi
