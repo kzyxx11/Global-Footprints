@@ -2,7 +2,7 @@ name: Auto Update Travel Footprints
 
 on:
   repository_dispatch:
-    types: [ add_footprint ]
+    types: [add_footprint]
 
 permissions:
   contents: write # Only retain clean file write and code commit permissions.
